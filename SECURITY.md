@@ -2,10 +2,10 @@
 
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
+| Version | Supported                     |
+| ------- | ----------------------------- |
 | 0.1.x   | :negative_squared_cross_mark: |
-| 1.x     | :white_check_mark: |
+| 1.x     | :white_check_mark:            |
 
 ## Reporting a Vulnerability
 
@@ -13,9 +13,10 @@ We currently support the latest patch versions of the 1.x release line. Older ve
 
 We take security seriously. If you discover a vulnerability in our software, we request that you responsibly disclose it by emailing us directly.
 
-**Email:** hello [@] rybbit.io
+**Email:** hello [@] rybbit.com
 
 Please include as much detail as possible to help us understand and resolve the issue quickly. This includes:
+
 - A clear description of the vulnerability
 - Steps to reproduce it
 - Any relevant logs, proof-of-concept code, or screenshots

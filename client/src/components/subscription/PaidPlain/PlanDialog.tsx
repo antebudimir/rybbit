@@ -220,7 +220,7 @@ export function PlanDialog({ open, onOpenChange, currentPlanName, hasActiveSubsc
           {/* Features comparison link */}
           <div className="mt-3 text-center">
             <a
-              href="https://www.rybbit.io/pricing"
+              href="https://www.rybbit.com/pricing"
               target="_blank"
               rel="noopener noreferrer"
               className="text-neutral-200 hover:text-neutral-100 text-sm underline"

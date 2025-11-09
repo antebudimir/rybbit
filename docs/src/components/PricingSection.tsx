@@ -313,7 +313,7 @@ export function PricingSection() {
                 </div>
 
                 {proPrices.custom ? (
-                  <Link href="https://www.rybbit.io/contact" className="w-full block">
+                  <Link href="https://www.rybbit.com/contact" className="w-full block">
                     <button className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-5 py-3 rounded-lg shadow-lg shadow-emerald-900/20 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50 cursor-pointer">
                       Contact us
                     </button>

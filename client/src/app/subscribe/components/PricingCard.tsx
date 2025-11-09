@@ -28,7 +28,7 @@ export function PricingCard({ isLoggedIn }: { isLoggedIn: boolean }) {
   async function handleSubscribe(planType: "standard" | "pro"): Promise<void> {
     // Handle custom tier by redirecting to email contact
     if (eventLimit === "Custom") {
-      window.location.href = "https://www.rybbit.io/contact";
+      window.location.href = "https://www.rybbit.com/contact";
       return;
     }
 

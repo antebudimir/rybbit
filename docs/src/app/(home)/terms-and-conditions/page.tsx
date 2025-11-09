@@ -215,7 +215,7 @@ export default function TermsAndConditions() {
         <h2 className="text-2xl font-semibold mt-8 mb-4">Contact Information</h2>
         <p>
           If you have any questions about these Terms and Conditions, please contact us at:
-          <a href="https://www.rybbit.io/contact" className="text-emerald-400 hover:text-emerald-300 ml-1">
+          <a href="https://www.rybbit.com/contact" className="text-emerald-400 hover:text-emerald-300 ml-1">
             hello@rybbit.com
           </a>
         </p>
