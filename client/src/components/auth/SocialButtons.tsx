@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { SiGoogle, SiGithub } from "@icons-pack/react-simple-icons";
 import { authClient } from "@/lib/auth";
 import { IS_CLOUD } from "@/lib/const";
+import { features } from "@/lib/features";
 
 interface SocialButtonsProps {
   onError: (error: string) => void;
@@ -13,7 +14,8 @@ interface SocialButtonsProps {
 }
 
 export function SocialButtons({ onError, callbackURL, mode = "signin", className = "" }: SocialButtonsProps) {
-  if (!IS_CLOUD) return null;
+  // Show social buttons if in cloud mode OR if OAuth features are enabled for self-hosted
+  if (!IS_CLOUD && !features.googleOAuth && !features.githubOAuth) return null;
 
   const handleSocialAuth = async (provider: "google" | "github" | "twitter") => {
     try {
@@ -35,14 +37,18 @@ export function SocialButtons({ onError, callbackURL, mode = "signin", className
       </div>
 
       <div className={`flex flex-col gap-2 ${className}`}>
-        <Button type="button" onClick={() => handleSocialAuth("google")}>
-          <SiGoogle />
-          Google
-        </Button>
-        <Button type="button" onClick={() => handleSocialAuth("github")}>
-          <SiGithub />
-          GitHub
-        </Button>
+        {(IS_CLOUD || features.googleOAuth) && (
+          <Button type="button" onClick={() => handleSocialAuth("google")}>
+            <SiGoogle />
+            Google
+          </Button>
+        )}
+        {(IS_CLOUD || features.githubOAuth) && (
+          <Button type="button" onClick={() => handleSocialAuth("github")}>
+            <SiGithub />
+            GitHub
+          </Button>
+        )}
       </div>
     </>
   );

@@ -456,10 +456,11 @@ const start = async () => {
     console.info("Starting server...");
     await Promise.all([initializeClickhouse(), initPostgres()]);
 
+    const { logFeatureStatus } = await import("./lib/features.js");
+    logFeatureStatus(server.log);
+
     telemetryService.startTelemetryCron();
-    if (IS_CLOUD) {
-      weeklyReportService.startWeeklyReportCron();
-    }
+    weeklyReportService.startWeeklyReportCron();
 
     // Start the server first
     await server.listen({ port: 3001, host: "0.0.0.0" });

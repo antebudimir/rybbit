@@ -4,7 +4,7 @@ import { Button } from "../../../../../components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../../components/ui/select";
 import { FilterOptions, OperatorOptions } from "./const";
 import { ValueSelect } from "./ValueSelect";
-import { IS_CLOUD } from "../../../../../lib/const";
+import { features } from "../../../../../lib/features";
 
 export function FilterComponent({
   filter,
@@ -19,9 +19,9 @@ export function FilterComponent({
 }) {
   const availableFilterOptions = availableFilters
     ? FilterOptions.filter(option => availableFilters?.includes(option.value)).filter(
-        option => IS_CLOUD || !option.cloudOnly
+        option => features.networkFilters || !option.cloudOnly
       )
-    : FilterOptions.filter(option => IS_CLOUD || !option.cloudOnly);
+    : FilterOptions.filter(option => features.networkFilters || !option.cloudOnly);
 
   return (
     <div className="grid grid-cols-[220px_auto] md:grid-cols-[160px_100px_250px_auto] gap-2">

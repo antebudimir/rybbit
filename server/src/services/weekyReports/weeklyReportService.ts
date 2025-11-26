@@ -7,7 +7,7 @@ import { clickhouse } from "../../db/clickhouse/clickhouse.js";
 import { processResults } from "../../api/analytics/utils.js";
 import { createServiceLogger } from "../../lib/logger/logger.js";
 import { sendWeeklyReportEmail } from "../../lib/email/email.js";
-import { IS_CLOUD } from "../../lib/const.js";
+import { features } from "../../lib/features.js";
 import type { OverviewData, MetricData, SiteReport, OrganizationReport } from "./weeklyReportTypes.js";
 
 class WeeklyReportService {
@@ -371,8 +371,8 @@ class WeeklyReportService {
   }
 
   public async generateAndSendReports(): Promise<void> {
-    if (!IS_CLOUD) {
-      this.logger.info("Skipping weekly reports for non-cloud instance");
+    if (!features.emailReports) {
+      this.logger.info("Skipping weekly reports - email support not configured");
       return;
     }
 
@@ -421,8 +421,8 @@ class WeeklyReportService {
   }
 
   private initializeWeeklyReportCron(): void {
-    if (!IS_CLOUD) {
-      this.logger.info("Skipping weekly report cron initialization for non-cloud instance");
+    if (!features.emailReports) {
+      this.logger.info("Skipping weekly report cron - email support not configured");
       return;
     }
 
