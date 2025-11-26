@@ -1,6 +1,5 @@
 import { Resend } from "resend";
 import { render } from "@react-email/components";
-import { IS_CLOUD } from "../const.js";
 import { InvitationEmail } from "./templates/InvitationEmail.js";
 import { LimitExceededEmail } from "./templates/LimitExceededEmail.js";
 import { WeeklyReportEmail } from "./templates/WeeklyReportEmail.js";
@@ -8,7 +7,8 @@ import type { OrganizationReport } from "../../services/weekyReports/weeklyRepor
 
 let resend: Resend | undefined;
 
-if (IS_CLOUD) {
+// This matches the feature flag logic: emailSupport = IS_CLOUD || hasEmailSupport()
+if (process.env.RESEND_API_KEY) {
   resend = new Resend(process.env.RESEND_API_KEY);
 }
 

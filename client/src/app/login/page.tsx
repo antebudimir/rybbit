@@ -13,7 +13,7 @@ import { RybbitLogo } from "../../components/RybbitLogo";
 import { useSetPageTitle } from "../../hooks/useSetPageTitle";
 import { authClient } from "../../lib/auth";
 import { useConfigs } from "../../lib/configs";
-import { IS_CLOUD } from "../../lib/const";
+import { IS_CLOUD, ENABLE_TURNSTILE } from "../../lib/const";
 import { userStore } from "../../lib/userStore";
 
 export default function Page() {
@@ -32,8 +32,8 @@ export default function Page() {
 
     setError("");
 
-    // Validate Turnstile token if in cloud mode and production
-    if (IS_CLOUD && process.env.NODE_ENV === "production" && !turnstileToken) {
+    // Validate Turnstile token if enabled
+    if (ENABLE_TURNSTILE && !turnstileToken) {
       setError("Please complete the captcha verification");
       setIsLoading(false);
       return;
@@ -47,7 +47,7 @@ export default function Page() {
         },
         {
           onRequest: context => {
-            if (IS_CLOUD && process.env.NODE_ENV === "production" && turnstileToken) {
+            if (ENABLE_TURNSTILE && turnstileToken) {
               context.headers.set("x-captcha-response", turnstileToken);
             }
           },
@@ -69,7 +69,7 @@ export default function Page() {
     setIsLoading(false);
   };
 
-  const turnstileEnabled = IS_CLOUD && process.env.NODE_ENV === "production";
+  const turnstileEnabled = ENABLE_TURNSTILE;
 
   return (
     <div className="flex flex-col justify-between items-center h-dvh w-full p-4">

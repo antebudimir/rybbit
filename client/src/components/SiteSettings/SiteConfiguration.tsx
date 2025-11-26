@@ -29,6 +29,7 @@ import { GSCManager } from "./GSCManager";
 import { useStripeSubscription } from "../../lib/subscription/useStripeSubscription";
 import { Badge } from "../ui/badge";
 import { IS_CLOUD } from "../../lib/const";
+import { features } from "../../lib/features";
 
 interface SiteConfigurationProps {
   siteMetadata: SiteResponse;
@@ -182,8 +183,8 @@ export function SiteConfiguration({ siteMetadata, disabled = false, onClose }: S
   const { data: subscription } = useStripeSubscription();
 
   const sessionReplayDisabled = !subscription?.isPro && IS_CLOUD;
-  const webVitalsDisabled = subscription?.status !== "active" && IS_CLOUD;
-  const trackErrorsDisabled = subscription?.status !== "active" && IS_CLOUD;
+  const webVitalsDisabled = !features.webVitals || (subscription?.status !== "active" && IS_CLOUD);
+  const trackErrorsDisabled = !features.errorTracking || (subscription?.status !== "active" && IS_CLOUD);
 
   // Configuration for analytics feature toggles
   const analyticsToggles: ToggleConfig[] = [
@@ -198,21 +199,17 @@ export function SiteConfiguration({ siteMetadata, disabled = false, onClose }: S
       disabled: sessionReplayDisabled,
       badge: <Badge variant="success">Pro</Badge>,
     },
-    ...(IS_CLOUD
-      ? [
-          {
-            id: "webVitals",
-            label: "Web Vitals",
-            description: "Track Core Web Vitals metrics (LCP, CLS, INP, FCP, TTFB)",
-            value: toggleStates.webVitals,
-            key: "webVitals" as keyof SiteResponse,
-            enabledMessage: "Web Vitals enabled",
-            disabledMessage: "Web Vitals disabled",
-            disabled: webVitalsDisabled,
-            badge: <Badge variant="success">Standard</Badge>,
-          } as ToggleConfig,
-        ]
-      : []),
+    {
+      id: "webVitals",
+      label: "Web Vitals",
+      description: "Track Core Web Vitals metrics (LCP, CLS, INP, FCP, TTFB)",
+      value: toggleStates.webVitals,
+      key: "webVitals" as keyof SiteResponse,
+      enabledMessage: "Web Vitals enabled",
+      disabledMessage: "Web Vitals disabled",
+      disabled: webVitalsDisabled,
+      badge: IS_CLOUD ? <Badge variant="success">Standard</Badge> : undefined,
+    },
     {
       id: "trackErrors",
       label: "Error Tracking",
@@ -222,7 +219,7 @@ export function SiteConfiguration({ siteMetadata, disabled = false, onClose }: S
       enabledMessage: "Error tracking enabled",
       disabledMessage: "Error tracking disabled",
       disabled: trackErrorsDisabled,
-      badge: <Badge variant="success">Standard</Badge>,
+      badge: IS_CLOUD ? <Badge variant="success">Standard</Badge> : undefined,
     },
     {
       id: "trackOutbound",
@@ -307,7 +304,7 @@ export function SiteConfiguration({ siteMetadata, disabled = false, onClose }: S
       <CountryExclusionManager siteId={siteMetadata.siteId} disabled={disabled} />
 
       {/* Google Search Console Section */}
-      {IS_CLOUD && <GSCManager disabled={disabled} />}
+      {features.googleSearchConsole && <GSCManager disabled={disabled} />}
 
       {/* Domain Settings Section */}
       <div className="space-y-3">

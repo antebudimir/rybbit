@@ -3,15 +3,21 @@
 import NumberFlow from "@number-flow/react";
 import { useMeasure } from "@uidotdev/usehooks";
 import { useAtom } from "jotai";
+import dynamic from "next/dynamic";
 import { useGetLiveUsercount } from "../../../api/analytics/useGetLiveUserCount";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select";
 import { useSetPageTitle } from "../../../hooks/useSetPageTitle";
 import { RealtimeChart } from "./RealtimeChart/RealtimeChart";
 import { RealtimeEvents } from "./RealtimeEvents/RealtimeEvents";
-import { World } from "./RealtimeGlobe/RealtimeGlobe";
 import { minutesAtom, MinutesType } from "./realtimeStore";
 import { DisabledOverlay } from "../../../components/DisabledOverlay";
 import { MobileSidebar } from "../components/Sidebar/MobileSidebar";
+
+// Dynamically import World component to avoid SSR issues with react-globe.gl
+const World = dynamic(() => import("./RealtimeGlobe/RealtimeGlobe").then(mod => ({ default: mod.World })), {
+  ssr: false,
+  loading: () => <div className="w-full h-full flex items-center justify-center">Loading globe...</div>,
+});
 
 export default function RealtimePage() {
   useSetPageTitle("Rybbit · Realtime");

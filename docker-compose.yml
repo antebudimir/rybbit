@@ -64,7 +64,7 @@ services:
     restart: unless-stopped
 
   backend:
-    image: ghcr.io/rybbit-io/rybbit-backend:${IMAGE_TAG:-latest}
+    # Always build locally to use your .env config
     container_name: backend
     build:
       context: .
@@ -100,7 +100,7 @@ services:
     restart: unless-stopped
 
   client:
-    image: ghcr.io/rybbit-io/rybbit-client:${IMAGE_TAG:-latest}
+    # Always build locally to use your .env configuration
     container_name: client
     build:
       context: .
@@ -108,6 +108,15 @@ services:
       args:
         NEXT_PUBLIC_BACKEND_URL: ${BASE_URL}
         NEXT_PUBLIC_DISABLE_SIGNUP: ${DISABLE_SIGNUP}
+        NEXT_PUBLIC_CLOUD: ${NEXT_PUBLIC_CLOUD:-false}
+        NEXT_PUBLIC_MAPBOX_TOKEN: ${NEXT_PUBLIC_MAPBOX_TOKEN}
+        NEXT_PUBLIC_ENABLE_TURNSTILE: ${NEXT_PUBLIC_ENABLE_TURNSTILE}
+        NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+        NEXT_PUBLIC_ENABLE_GSC: ${NEXT_PUBLIC_ENABLE_GSC}
+        NEXT_PUBLIC_ENABLE_GOOGLE_OAUTH: ${NEXT_PUBLIC_ENABLE_GOOGLE_OAUTH}
+        NEXT_PUBLIC_ENABLE_GITHUB_OAUTH: ${NEXT_PUBLIC_ENABLE_GITHUB_OAUTH}
+        NEXT_PUBLIC_ENABLE_WEB_VITALS: ${NEXT_PUBLIC_ENABLE_WEB_VITALS}
+        NEXT_PUBLIC_ENABLE_ERROR_TRACKING: ${NEXT_PUBLIC_ENABLE_ERROR_TRACKING}
     ports:
       - "${HOST_CLIENT_PORT:-127.0.0.1:3002:3002}"
     environment:

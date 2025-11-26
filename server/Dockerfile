@@ -22,6 +22,9 @@ RUN npm run build
 
 # Runtime image
 FROM node:20-alpine
+LABEL org.opencontainers.image.source=https://github.com/antebudimir/rybbit
+LABEL org.opencontainers.image.description="Rybbit backend with enterprise features for self-hosting"
+LABEL org.opencontainers.image.licenses=AGPL-3.0
 
 WORKDIR /app
 

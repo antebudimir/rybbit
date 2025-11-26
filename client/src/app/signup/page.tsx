@@ -19,7 +19,7 @@ import { RybbitLogo, RybbitTextLogo } from "../../components/RybbitLogo";
 import { useSetPageTitle } from "../../hooks/useSetPageTitle";
 import { authClient } from "../../lib/auth";
 import { useConfigs } from "../../lib/configs";
-import { IS_CLOUD } from "../../lib/const";
+import { IS_CLOUD, ENABLE_TURNSTILE } from "../../lib/const";
 import { userStore } from "../../lib/userStore";
 import { cn, isValidDomain, normalizeDomain } from "../../lib/utils";
 
@@ -83,8 +83,8 @@ export default function SignupPage() {
     setError("");
 
     try {
-      // Validate Turnstile token if in cloud mode
-      if (IS_CLOUD && !turnstileToken) {
+      // Validate Turnstile token if enabled
+      if (ENABLE_TURNSTILE && !turnstileToken) {
         setError("Please complete the captcha verification");
         setIsLoading(false);
         return;
@@ -98,7 +98,7 @@ export default function SignupPage() {
         },
         {
           onRequest: context => {
-            if (IS_CLOUD && turnstileToken) {
+            if (ENABLE_TURNSTILE && turnstileToken) {
               context.headers.set("x-captcha-response", turnstileToken);
             }
           },
@@ -214,7 +214,7 @@ export default function SignupPage() {
                 onChange={e => setPassword(e.target.value)}
               />
 
-              {IS_CLOUD && (
+              {ENABLE_TURNSTILE && (
                 <Turnstile
                   onSuccess={token => setTurnstileToken(token)}
                   onError={() => setTurnstileToken("")}
@@ -229,7 +229,7 @@ export default function SignupPage() {
                 onClick={handleAccountSubmit}
                 type="button"
                 className="mt-6 transition-all duration-300 h-11"
-                disabled={IS_CLOUD ? !turnstileToken || isLoading : isLoading}
+                disabled={ENABLE_TURNSTILE ? !turnstileToken || isLoading : isLoading}
               >
                 Continue
                 <ArrowRight className="ml-2 h-4 w-4" />
